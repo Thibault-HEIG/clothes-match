@@ -1,0 +1,37 @@
+{
+	"name": "HEIG-VD ProgServ2 Course Development Container",
+	"image": "mcr.microsoft.com/devcontainers/base:trixie",
+	"workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+	"workspaceFolder": "/workspace",
+	"features": {
+		"ghcr.io/devcontainers/features/docker-in-docker:4.1.0": {
+			"moby": false
+		}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"bmewburn.vscode-intelephense-client",
+				"esbenp.prettier-vscode",
+				"qwtel.sqlite-viewer"
+			]
+		}
+	},
+	"forwardPorts": [3306, 8025, 8080, 9090],
+	"portsAttributes": {
+		"3306": {
+			"label": "MariaDB Database Server"
+		},
+		"8025": {
+			"label": "Mailpit SMTP Server"
+		},
+		"8080": {
+			"label": "Apache Web Server"
+		},
+		"9090": {
+			"label": "phpMyAdmin Web Interface"
+		}
+	},
+	// Execute the post-create.sh script once the container is created
+	"postCreateCommand": ".devcontainer/post-create.sh"
+}
