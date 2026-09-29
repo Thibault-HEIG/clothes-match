@@ -2,9 +2,11 @@
 
 **Ordre de priorités :**
 
-| MVP1️⃣ | Nécéssaire |
-| MVP2️⃣ | Si possible |
-| MVP3️⃣ | Si on a le temps |
+| Version | Priorité |
+|-----------|-----------|
+| MVP1️⃣     | Nécéssaire |
+| MVP2️⃣     | Si possible |
+| MVP3️⃣     | Si on a le temps |
 
 ### 1. Authentification
 
@@ -57,7 +59,7 @@ Facteurs d'influence à pondérer dans l'algorithme :
 - 3️⃣ Note (apprentissage à partir des retours sur les outfits précédents)
 - 1️⃣ Aléatoire (pour éviter la répétition)
 
--> Fonctionne comme un LLM. Prend un vêtement, puis tire le 2ème parmi les plus accordés avec des pondérations.
+> Fonctionne comme un LLM. Prend un vêtement, puis tire le 2ème parmi les plus accordés avec des pondérations.
 ---
 
 ## Pages
