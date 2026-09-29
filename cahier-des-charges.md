@@ -1,5 +1,12 @@
 # App de garde-robe
 
+Une garde-robe numérique qui regroupe tous vos vêtements en photo et vous suggère des tenues harmonieuses au quotidien.
+
+# Membres de l'équipe
+
+- Thibault Moret
+- Loana Babey
+
 **Ordre de priorités :**
 
 | Version | Priorité |
