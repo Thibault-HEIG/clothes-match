@@ -1,70 +1,70 @@
 volumes:
-  mariadb_data:
+  mariadb_data: # Named volume: persists database files between container restarts
 
 services:
-  apache:
-    container_name: apache
+  apache: # Web server that runs PHP
+    container_name: apache # Fixed container name for predictable networking
     build:
-      context: .
-      dockerfile_inline: |
-        FROM php:8.5-apache
-        RUN docker-php-ext-install -j$(nproc) pdo_mysql
+      context: . # Build from current directory
+      dockerfile_inline: | # Define Dockerfile inline instead of separate file
+        FROM php:8.5-apache # Base image: PHP 8.5 with Apache preinstalled
+        RUN docker-php-ext-install -j$(nproc) pdo_mysql # Install MySQL driver so PHP can connect to MariaDB
     ports:
-      - 8080:80
+      - 8080:80 # Map port 8080 on your machine to port 80 in container (http://localhost:8080)
     volumes:
-      - .:/var/www/html
-    command:
+      - .:/var/www/html # Mount current directory as Apache's document root (live code editing)
+    command: # Override default container startup; run shell with custom Apache config
       - /bin/sh
       - -lc
-      - |
+      - | # Create custom Apache config to serve from /var/www/html
         cat > /etc/apache2/sites-available/000-default.conf <<"EOF"
-        <VirtualHost *:80>
-            DocumentRoot /var/www/html
-            ErrorLog $${APACHE_LOG_DIR}/error.log
-            CustomLog $${APACHE_LOG_DIR}/access.log combined
+        <VirtualHost *:80> # Listen on all network interfaces, port 80
+            DocumentRoot /var/www/html # Files served from here
+            ErrorLog $${APACHE_LOG_DIR}/error.log # Apache error logs
+            CustomLog $${APACHE_LOG_DIR}/access.log combined # HTTP request logs
 
             <Directory /var/www/html>
-                Options +Indexes
+                Options +Indexes # Allow directory listing if index file missing (useful for dev)
             </Directory>
         </VirtualHost>
         EOF
-        exec apache2-foreground
+        exec apache2-foreground # Start Apache in foreground (required for container to stay alive)
 
-  mailpit:
+  mailpit: # Mock SMTP server: captures emails sent by your PHP app (testing only)
     container_name: mailpit
-    image: axllent/mailpit:v1.30
+    image: axllent/mailpit:v1.30 # Pre-built image from Docker Hub
     ports:
-      - 1025:1025
-      - 8025:8025
+      - 1025:1025 # SMTP port: what your PHP app connects to
+      - 8025:8025 # Web UI port: http://localhost:8025 to view captured emails
 
-  mariadb:
+  mariadb: # MySQL-compatible database server
     container_name: mariadb
-    image: mariadb:12
-    environment:
-      - MARIADB_RANDOM_ROOT_PASSWORD=yes
-      - MARIADB_USER=username
-      - MARIADB_PASSWORD=password
-      - MARIADB_DATABASE=my_database
+    image: mariadb:12 # Pre-built MariaDB image
+    environment: # Environment variables passed to container
+      - MARIADB_RANDOM_ROOT_PASSWORD=yes # Generate random root password (more secure than hardcoding)
+      - MARIADB_USER=username # Create non-root user for app
+      - MARIADB_PASSWORD=password # Password for that user
+      - MARIADB_DATABASE=my_database # Create this database automatically on startup
     ports:
-      - 3306:3306
+      - 3306:3306 # MySQL port: what Apache/PHP connects to
     volumes:
-      - mariadb_data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
-      start_period: 10s
-      interval: 10s
-      timeout: 5s
-      retries: 3
+      - mariadb_data:/var/lib/mysql # Persist database files using named volume (survives container deletion)
+    healthcheck: # Periodically check if database is ready before dependent services start
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"] # Run built-in health script
+      start_period: 10s # Wait 10s before first health check (database needs time to init)
+      interval: 10s # Check every 10s
+      timeout: 5s # Fail if check takes >5s
+      retries: 3 # Mark unhealthy after 3 failed checks
 
-  phpmyadmin:
+  phpmyadmin: # Web UI for database management (alternative to command line)
     container_name: phpmyadmin
-    image: phpmyadmin/phpmyadmin:5
-    depends_on:
+    image: phpmyadmin/phpmyadmin:5 # Pre-built image
+    depends_on: # Don't start until mariadb is healthy
       mariadb:
-        condition: service_healthy
-    environment:
-      - PMA_HOST=mariadb
-      - PMA_PORT=3306
-      - PMA_DATABASE=my_database
+        condition: service_healthy # Wait for healthcheck to pass
+    environment: # Connection info for phpmyadmin to reach database
+      - PMA_HOST=mariadb # Container name (Docker DNS resolves this)
+      - PMA_PORT=3306 # Standard MySQL port
+      - PMA_DATABASE=my_database # Default database to show
     ports:
-      - 9090:80
+      - 9090:80 # Access UI at http://localhost:9090
