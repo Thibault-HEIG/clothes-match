@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS clothes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     img_url VARCHAR(500) NOT NULL,
     category VARCHAR(20) NOT NULL,
-    season DOUBLE NOT NULL,
+    season INT NOT NULL,
     hue DOUBLE NOT NULL,
     saturation DOUBLE NOT NULL,
     brightness DOUBLE NOT NULL,
