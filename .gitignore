@@ -12,3 +12,9 @@ Thumbs.db
 
 # Folder config file
 [Dd]esktop.ini
+
+# tests
+tests
+
+# Variables d'envrionnement
+.env
