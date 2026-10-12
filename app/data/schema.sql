@@ -10,17 +10,25 @@ CREATE TABLE IF NOT EXISTS users (
     last_season_harmony_importance DOUBLE -- [0,1]
 );
 
+CREATE TABLE IF NOT EXISTS seasons (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(20) NOT NULL,
+    avg_temperature INT NOT NULL,
+    icon_url VARCHAR(50)
+)
+
 CREATE TABLE IF NOT EXISTS clothes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     img_url VARCHAR(500) NOT NULL,
     category VARCHAR(20) NOT NULL,
-    season INT NOT NULL,
+    season_id INT NOT NULL,
     hue DOUBLE NOT NULL,
     saturation DOUBLE NOT NULL,
     brightness DOUBLE NOT NULL,
     user_rate INT NOT NULL,
     user_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id)
+    FOREIGN KEY (season_id) REFERENCES seasons (id)
 );
 
 CREATE TABLE IF NOT EXISTS results (
