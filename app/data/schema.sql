@@ -1,5 +1,12 @@
 USE my_database;
 
+CREATE TABLE IF NOT EXISTS seasons (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(20) NOT NULL,
+    avg_temperature INT NOT NULL,
+    icon_url VARCHAR(50)
+);
+
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -7,15 +14,11 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(255) NOT NULL,
     last_prefered_season INT, -- Entre 5°C et 30°C
     last_color_harmony_importance DOUBLE, -- [0,1]
-    last_season_harmony_importance DOUBLE -- [0,1]
+    last_season_harmony_importance DOUBLE, -- [0,1]
+    FOREIGN KEY (last_prefered_season) REFERENCES seasons (id)
 );
 
-CREATE TABLE IF NOT EXISTS seasons (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(20) NOT NULL,
-    avg_temperature INT NOT NULL,
-    icon_url VARCHAR(50)
-)
+
 
 CREATE TABLE IF NOT EXISTS clothes (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -27,7 +30,7 @@ CREATE TABLE IF NOT EXISTS clothes (
     brightness DOUBLE NOT NULL,
     user_rate INT NOT NULL,
     user_id INT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users (id)
+    FOREIGN KEY (user_id) REFERENCES users (id),
     FOREIGN KEY (season_id) REFERENCES seasons (id)
 );
 
