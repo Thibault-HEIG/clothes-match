@@ -6,4 +6,4 @@ La maquette de l'application a été réalisée sur Figma. Elle présente les di
 
 # Modèles Conceptuels et Logiques de Données (MCD & MLD)
 
-🔗 [Accéder au MCD et MLD](https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&dark=auto#G1H6hM5Nk30kFK192vhUr4d6uAWu8GGjTG)
+Accéder au MCD et MLD -> `modele-de-donnees/MCD.drawio.png` & `modele-de-donnees/MLD.drawio.png`

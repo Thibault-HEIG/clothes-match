@@ -14,7 +14,6 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(255) NOT NULL,
     last_color_harmony_importance DOUBLE, -- [0,1]
     last_season_harmony_importance DOUBLE, -- [0,1]
-    FOREIGN KEY (last_prefered_season) REFERENCES seasons (id)
 );
 
 
