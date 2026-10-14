@@ -1,15 +1,16 @@
 <?php
 const DB_HOST = 'mariadb';
 const DB_PORT = 3306;
-const DB_NAME = 'my_database';
-const DB_USER = 'username';
-const DB_PASSWORD = 'password';
 
-$dsn = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4";
+$DB_NAME = getenv('DB_NAME');
+$DB_USER = getenv('DB_USER');
+$DB_PASSWORD = getenv('DB_PASSWORD');
 
-$pdo = new PDO($dsn, DB_USER, DB_PASSWORD);
+$dsn = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . $DB_NAME . ";charset=utf8mb4";
 
-$sql = "SELECT * FROM my_table";
+$pdo = new PDO($dsn, $DB_USER, $DB_PASSWORD);
+
+$sql = "SELECT * FROM users";
 
 $stmt = $pdo->prepare($sql);
 
@@ -38,8 +39,9 @@ $results = $stmt->fetchAll();
         <?php foreach ($results as $row) { ?>
             <li>ID: <?= htmlspecialchars($row['id']) ?>
                 <ul>
-                    <li>Column1: <?= htmlspecialchars($row['column1']) ?></li>
-                    <li>Column2: <?= htmlspecialchars($row['column2']) ?></li>
+                    <li>Name: <?= htmlspecialchars($row['name']) ?></li>
+                    <li>Email: <?= htmlspecialchars($row['email']) ?></li>
+                    <li>Password: <?= htmlspecialchars($row['password']) ?></li>
                 </ul>
             </li>
         <?php } ?>
