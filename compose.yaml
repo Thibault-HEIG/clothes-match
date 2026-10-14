@@ -42,9 +42,9 @@ services:
     image: mariadb:12
     environment:
       - MARIADB_RANDOM_ROOT_PASSWORD=yes
-      - MARIADB_USER=username
-      - MARIADB_PASSWORD=password
-      - MARIADB_DATABASE=my_database
+      - MARIADB_USER=${DB_USER}
+      - MARIADB_PASSWORD=${DB_PASSWORD}
+      - MARIADB_DATABASE=${DB_NAME}
     ports:
       - 3306:3306
     volumes:
@@ -65,6 +65,6 @@ services:
     environment:
       - PMA_HOST=mariadb
       - PMA_PORT=3306
-      - PMA_DATABASE=my_database
+      - PMA_DATABASE=${DB_NAME}
     ports:
       - 9090:80

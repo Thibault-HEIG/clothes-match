@@ -1,4 +1,4 @@
-USE my_database;
+USE clothes_match;
 
 CREATE TABLE IF NOT EXISTS seasons (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     last_color_harmony_importance DOUBLE, -- [0,1]
-    last_season_harmony_importance DOUBLE, -- [0,1]
+    last_season_harmony_importance DOUBLE -- [0,1]
 );
 
 
