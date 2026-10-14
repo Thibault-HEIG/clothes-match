@@ -12,7 +12,6 @@ CREATE TABLE IF NOT EXISTS users (
     name VARCHAR(100) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    last_prefered_season INT, -- Entre 5°C et 30°C
     last_color_harmony_importance DOUBLE, -- [0,1]
     last_season_harmony_importance DOUBLE, -- [0,1]
     FOREIGN KEY (last_prefered_season) REFERENCES seasons (id)
