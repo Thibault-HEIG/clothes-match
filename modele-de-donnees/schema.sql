@@ -40,11 +40,9 @@ CREATE TABLE IF NOT EXISTS results (
     id_jacket INT,
     id_accessory INT,
     timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    user_id INT NOT NULL,
     FOREIGN KEY (id_top) REFERENCES clothes (id),
     FOREIGN KEY (id_bottom) REFERENCES clothes (id),
     FOREIGN KEY (id_shoes) REFERENCES clothes (id),
     FOREIGN KEY (id_jacket) REFERENCES clothes (id),
-    FOREIGN KEY (id_accessory) REFERENCES clothes (id),
-    FOREIGN KEY (user_id) REFERENCES users (id)
+    FOREIGN KEY (id_accessory) REFERENCES clothes (id)
 );
