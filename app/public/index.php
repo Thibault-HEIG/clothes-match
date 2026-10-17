@@ -1,16 +1,9 @@
 <?php
 require_once __DIR__ . '/../src/renderer.php';
-require_once __DIR__ . '/../src/Database.php';
+require_once __DIR__ . '/../src/userRepository.php';
 
-$pdo = Database::getPdo();
-$sql = "SELECT * FROM users";
-
-$stmt = $pdo->prepare($sql);
-
-$stmt->execute();
-
-$results = $stmt->fetchAll();
-
+$currentUserId = 1; // ID de l'utilisateur actuel
+$name = getUserById($currentUserId)->getName();
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +17,7 @@ $results = $stmt->fetchAll();
             <img src="" id="logo">
         </div>
         <span class="date"></span>
-        <h1></h1>
+        <h1>Bonjour <?$name?></h1>
         <span></span>
     </header>
 </body>
