@@ -1,18 +1,25 @@
 <?php
+/**
+ * Database class for managing the PDO connection.
+ */
+
 class Database {
+    private const DB_HOST = 'mariadb';
+    private const DB_PORT = 3306;
 
-    const DB_HOST = 'mariadb';
-    const DB_PORT = 3306;
-
-    $DB_NAME = getenv('DB_NAME');
-    $DB_USER = getenv('DB_USER');
-    $DB_PASSWORD = getenv('DB_PASSWORD');
-
-    $dsn = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . $DB_NAME . ";charset=utf8mb4";
-
-    $pdo = new PDO($dsn, $DB_USER, $DB_PASSWORD);
+    private static ?PDO $pdo = null;
 
     public static function getPdo(): PDO {
+        if (self::$pdo === null) {
+            $dbName = getenv('DB_NAME') ?: '';
+            $dbUser = getenv('DB_USER') ?: '';
+            $dbPassword = getenv('DB_PASSWORD') ?: '';
+
+            $dsn = "mysql:host=" . self::DB_HOST . ";port=" . self::DB_PORT . ";dbname=" . $dbName . ";charset=utf8mb4";
+
+            self::$pdo = new PDO($dsn, $dbUser, $dbPassword);
+        }
+
         return self::$pdo;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+$pdo = Database::getPdo();
 $sql = "SELECT * FROM users";
 
 $stmt = $pdo->prepare($sql);
