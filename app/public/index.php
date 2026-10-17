@@ -1,4 +1,7 @@
 <?php
+require_once __DIR__ . '/../src/renderer.php';
+require_once __DIR__ . '/../src/Database.php';
+
 $pdo = Database::getPdo();
 $sql = "SELECT * FROM users";
 
@@ -13,11 +16,7 @@ $results = $stmt->fetchAll();
 <!DOCTYPE html>
 <html lang="fr">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualisation de la garde-robe</title>
-</head>
+<?php render('head', ['title' => "On met quoi aujourd'hui ?", 'description' => "Clothes Match - Le bon vêtement au bon moment"]); ?>
 
 <body>
     <header>
@@ -29,5 +28,7 @@ $results = $stmt->fetchAll();
         <span></span>
     </header>
 </body>
+
+<?php render('footer'); ?>
 
 </html>
