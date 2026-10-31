@@ -17,18 +17,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $category = $_POST['category'] ?? '';
 
-    $season_id = (int) $_POST['season_id'];
+    $season_id = (int) $_POST['season_id'] ?? '';
 
-    $hue        = (int) $_POST['hue'];
-    $saturation = $_POST['saturation'] / 100;
-    $brightness = $_POST['brightness'] / 100;
+    $hue        = (int) $_POST['hue'] ?? '';
+    $saturation = $_POST['saturation'] / 100 ?? '';
+    $brightness = $_POST['brightness'] / 100 ?? '';
 
-    $rate = (int) $_POST['rate'];
+    $rate = (int) $_POST['rate'] ?? '';
 
-    $errors = getInputErrors($_FILES['photo'] ?? [], $_POST['tmp_file'] ?? '', $category, $season_id, $hue, $saturation, $brightness, $rate);
+    $rawImg = $_FILES['photo'] ?? [];
+    $tmpFile = $_POST['tmp_file'] ?? '';
+    var_dump($tmpFile);
+
+    $errors = getInputErrors($rawImg, $tmpFile, $category, $season_id, $hue, $saturation, $brightness, $rate);
 
     if (empty($errors)) {
-        $imgUrl = saveItemImage($_POST['tmp_file'] ?? '', $_FILES['photo'] ?? [], $currentUserId);
+        $imgUrl = saveItemImage($tmpFile, $rawImg, $currentUserId);
         addItem($imgUrl, $category, $season_id, $hue, $saturation, $brightness, $rate, $currentUserId);
         header('Location: index.php#wardrobe');
         exit;
@@ -119,7 +123,7 @@ function saveItemImage(string $tmpFile, array $upload, int $userId): ?string {
         <div class="season-select">
             <label>Saison</label>
             <?php foreach ($seasons as $season):
-                $default = $season->getName() == "Printemps" // Définir le printemps comme valeur par défaut 
+                $default = $season->getName() == "Printemps" // Spring is default value
             ?>
                 <input type="radio" name="season_id" value="<?= $season->getId() ?>" required <?= $default ? 'checked' : '' ?>>
                 <span><?= htmlspecialchars($season->getName()) ?></span>
@@ -146,7 +150,7 @@ function saveItemImage(string $tmpFile, array $upload, int $userId): ?string {
             <label>Note</label>
             <p class="tip">Plus la note est haute, plus le vêtement te sera proposé souvent</p>
             <?php for ($i = 1; $i <= 5; $i++):
-                $default = $i === 3; // Définir 3 comme valeur par défaut 
+                $default = $i === 3; // 3 is default value
             ?>
                 <input type="radio" name="rate" value="<?= $i ?>" required <?= $default ? 'checked' : '' ?>><span><?= $i ?>★</span>
             <?php endfor; ?>
