@@ -21,9 +21,9 @@ function getItemById(int $id): ?Item {
     return new Item(
         (int)$row['id'],
         $row['category'],
-        (float)$row['hue'],
-        (float)$row['saturation'],
-        (float)$row['brightness'],
+        (int)$row['hue'],
+        (int)$row['saturation'],
+        (int)$row['brightness'],
         new Season((int)$row['season_id'], $row['season_name'], (int)$row['avg_temperature'], $row['icon_url']),
         (int)$row['user_rate'],
         $row['img_url']
@@ -61,9 +61,9 @@ function getItemsByCategoryAndUserId(string $category, int $userId): array {
         $items[] = new Item(
             (int)$row['id'],
             $row['category'],
-            (float)$row['hue'],
-            (float)$row['saturation'],
-            (float)$row['brightness'],
+            (int)$row['hue'],
+            (int)$row['saturation'],
+            (int)$row['brightness'],
             new Season((int)$row['season_id'], $row['season_name'], (int)$row['avg_temperature'], $row['icon_url']),
             (int)$row['user_rate'],
             $row['img_url']
@@ -77,9 +77,9 @@ function addItem(
     string $imgUrl,
     string $category,
     int $seasonId,
-    float $hue,
-    float $saturation,
-    float $brightness,
+    int $hue,
+    int $saturation,
+    int $brightness,
     int $userRate,
     int $userId
 ): int {

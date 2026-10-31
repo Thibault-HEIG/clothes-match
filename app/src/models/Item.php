@@ -7,14 +7,14 @@ require_once __DIR__ . '/Season.php';
 class Item {
     private int $id;
     private string $category;
-    private float $hue;
-    private float $saturation;
-    private float $brightness;
+    private int $hue;
+    private int $saturation;
+    private int $brightness;
     private Season $season;
     private int $user_rate;
     private string $img_url;
 
-    public function __construct(int $id, string $category, float $hue, float $saturation, float $brightness, Season $season, int $user_rate, string $img_url) {
+    public function __construct(int $id, string $category, int $hue, int $saturation, int $brightness, Season $season, int $user_rate, string $img_url) {
         $this->id = $id;
         $this->category = $category;
         $this->hue = $hue;

@@ -10,24 +10,23 @@ $currentUserId = 1; // ID de l'utilisateur actuel (à remplacer par la session p
 $seasons = getAllSeasons();
 $errors   = [];
 
+$category = $_POST['category'] ?? '';
+
+$season_id = $_POST['season_id'] ?? 1; // Spring
+
+$hue        = $_POST['hue'] ?? 0;
+$saturation = $_POST['saturation'] ?? 0;
+$brightness = $_POST['brightness'] ?? 0;
+
+$rate = $_POST['rate'] ?? 3; // default value
+
+$rawImg = $_FILES['photo'] ?? [];
+$tmpFile = $_POST['tmp_file'] ?? '';
+
 // ---------------------------------------------------------------------------
 // POST handler — resolve image path, validate, persist
 // ---------------------------------------------------------------------------
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    $category = $_POST['category'] ?? '';
-
-    $season_id = (int) $_POST['season_id'] ?? '';
-
-    $hue        = (int) $_POST['hue'] ?? '';
-    $saturation = $_POST['saturation'] / 100 ?? '';
-    $brightness = $_POST['brightness'] / 100 ?? '';
-
-    $rate = (int) $_POST['rate'] ?? '';
-
-    $rawImg = $_FILES['photo'] ?? [];
-    $tmpFile = $_POST['tmp_file'] ?? '';
-    var_dump($tmpFile);
 
     $errors = getInputErrors($rawImg, $tmpFile, $category, $season_id, $hue, $saturation, $brightness, $rate);
 
@@ -77,7 +76,7 @@ function saveItemImage(string $tmpFile, array $upload, int $userId): ?string {
 <body>
     <link rel="stylesheet" href="css/colorPicker.css">
     <header id="addItem-header">
-        <a href="index.php">
+        <a href="wardrobe.php">
             <span>← Annuler</span>
         </a>
     </header>
@@ -122,10 +121,8 @@ function saveItemImage(string $tmpFile, array $upload, int $userId): ?string {
 
         <div class="season-select">
             <label>Saison</label>
-            <?php foreach ($seasons as $season):
-                $default = $season->getName() == "Printemps" // Spring is default value
-            ?>
-                <input type="radio" name="season_id" value="<?= $season->getId() ?>" required <?= $default ? 'checked' : '' ?>>
+            <?php foreach ($seasons as $season): ?>
+                <input type="radio" name="season_id" value="<?= $season->getId() ?>" required <?= $season_id === $season->getId() ? "checked" : "" ?>>
                 <span><?= htmlspecialchars($season->getName()) ?></span>
             <?php endforeach; ?>
         </div>
@@ -149,10 +146,8 @@ function saveItemImage(string $tmpFile, array $upload, int $userId): ?string {
         <div class="rate-select">
             <label>Note</label>
             <p class="tip">Plus la note est haute, plus le vêtement te sera proposé souvent</p>
-            <?php for ($i = 1; $i <= 5; $i++):
-                $default = $i === 3; // 3 is default value
-            ?>
-                <input type="radio" name="rate" value="<?= $i ?>" required <?= $default ? 'checked' : '' ?>><span><?= $i ?>★</span>
+            <?php for ($i = 1; $i <= 5; $i++): ?>
+                <input type="radio" name="rate" value="<?= $i ?>" required <?= $rate === $i ? "checked" : "" ?>><span><?= $i ?>★</span>
             <?php endfor; ?>
         </div>
 
