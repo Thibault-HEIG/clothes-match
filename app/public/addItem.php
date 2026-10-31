@@ -12,13 +12,13 @@ $errors   = [];
 
 $category = $_POST['category'] ?? '';
 
-$season_id = $_POST['season_id'] ?? 1; // Spring
+$season_id = isset($_POST['season_id']) ? (int) $_POST['season_id'] : 1; // Spring (default)
 
-$hue        = $_POST['hue'] ?? 0;
-$saturation = $_POST['saturation'] ?? 0;
-$brightness = $_POST['brightness'] ?? 0;
+$hue        = isset($_POST['hue']) ? (int) $_POST['hue'] : 0;
+$saturation = isset($_POST['saturation']) ? (int) $_POST['saturation'] : 0;
+$brightness = isset($_POST['brightness']) ? (int) $_POST['brightness'] : 0;
 
-$rate = $_POST['rate'] ?? 3; // default value
+$rate = isset($_POST['rate']) ? (int) $_POST['rate'] : 3; // default value
 
 $rawImg = $_FILES['photo'] ?? [];
 $tmpFile = $_POST['tmp_file'] ?? '';
@@ -100,13 +100,13 @@ function saveItemImage(string $tmpFile, array $upload, int $userId): ?string {
 
         <div class="photo-upload">
             <label for="photo">Photo</label>
-            <input type="file" id="photo" name="photo" accept="image/*" required>
+            <input type="file" id="photo" name="photo" accept="image/*" <?= !empty($tmpFile) ? '' : 'required' ?>>
             <!-- Filled by addItem.js once the API returns the processed PNG path -->
-            <input type="hidden" id="tmp_file" name="tmp_file">
+            <input type="hidden" id="tmp_file" name="tmp_file" value="<?= htmlspecialchars($tmpFile) ?>">
 
             <!-- Preview + status shown after file selection -->
-            <p id="photo-status" data-state="idle"></p>
-            <img id="photo-preview" src="" alt="Aperçu" hidden>
+            <p id="photo-status" data-state="<?= !empty($tmpFile) ? 'done' : 'idle' ?>"><?= !empty($tmpFile) ? 'Fond supprimé ✓' : '' ?></p>
+            <img id="photo-preview" src="<?= htmlspecialchars($tmpFile) ?>" alt="Aperçu" <?= !empty($tmpFile) ? '' : 'hidden' ?>>
         </div>
 
         <div class="category-select">
@@ -114,16 +114,18 @@ function saveItemImage(string $tmpFile, array $upload, int $userId): ?string {
             <select id="category" name="category" required>
                 <option value="">-- Choisir --</option>
                 <?php foreach (CATEGORIES as $value => $label): ?>
-                    <option value="<?= $value ?>"><?= $label ?></option>
+                    <option value="<?= htmlspecialchars($value) ?>" <?= $category === $value ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($label) ?>
+                    </option>
                 <?php endforeach; ?>
             </select>
         </div>
 
         <div class="season-select">
-            <label>Saison</label>
+            <legend>Saison</legend>
             <?php foreach ($seasons as $season): ?>
                 <input type="radio" name="season_id" value="<?= $season->getId() ?>" required <?= $season_id === $season->getId() ? "checked" : "" ?>>
-                <span><?= htmlspecialchars($season->getName()) ?></span>
+                <label for="season_id"><?= htmlspecialchars($season->getName()) ?></label>
             <?php endforeach; ?>
         </div>
 
@@ -135,12 +137,13 @@ function saveItemImage(string $tmpFile, array $upload, int $userId): ?string {
                     <div class="rond" id="rond"></div>
                 </div>
 
-                <input type="range" id="h" name="hue">
-                <input type="hidden" id="s" name="saturation">
-                <input type="hidden" id="v" name="brightness">
+                <input type="range" id="h" name="hue" value="<?= htmlspecialchars($hue) ?>">
+                <input type="hidden" id="s" name="saturation" value="<?= htmlspecialchars($saturation) ?>">
+                <input type="hidden" id="v" name="brightness" value="<?= htmlspecialchars($brightness) ?>">
 
-                <div class="apercu" id="apercu"></div>
+                <div class=" apercu" id="apercu">
             </div>
+        </div>
         </div>
 
         <div class="rate-select">

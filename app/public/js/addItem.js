@@ -42,15 +42,17 @@ photoInput.addEventListener('change', async () => {
         }
 
         // Show transparent PNG and set path for form submission
-        previewImg.src     = data.tmpFile;
-        tmpFileInput.value = data.tmpFile;
+        previewImg.src      = data.tmpFile;
+        tmpFileInput.value  = data.tmpFile;
+        photoInput.required = false;
         setStatus('done', 'Fond supprimé ✓');
 
     } catch (err) {
         console.error('Erreur traitement photo:', err);
         setStatus('error', `Échec : ${err.message}`);
         // Fallback: clear temp path so form submits the raw file
-        tmpFileInput.value = '';
+        tmpFileInput.value  = '';
+        photoInput.required = true;
     } finally {
         submitBtn.disabled = false;
     }
