@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <span>← Annuler</span>
         </a>
     </header>
-    <hero>
+    <section id="hero">
         <h1>Ajouter un vêtement</h1>
 
         <!-- Affichage dynamique des erreurs -->
@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </ul>
             <?php } ?>
         <?php } ?>
-    </hero>
+    </section>
 
     <form method="post" enctype="multipart/form-data">
 

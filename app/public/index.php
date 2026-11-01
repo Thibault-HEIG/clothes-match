@@ -22,12 +22,12 @@ $name = $user->getName();
         </a>
     </header>
     <main>
-        <hero>
+        <section id="hero">
             <span class="date"><?= DAYS_FR[date('w')] . ' ' . date('j') . ' ' . MONTHS_FR[date('n')] ?></span>
             <h1>Bonjour <?= htmlspecialchars($name) ?></h1>
             <h2>On porte quoi aujourd'hui?</h2>
             <p>Une tenue pensée à partir de ce que vous possédez déjà</p>
-        </hero>
+        </section>
         <section id="outfit">
             <div id="outfit-container">
                 <div class="items-top">
