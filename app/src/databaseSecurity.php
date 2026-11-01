@@ -19,6 +19,8 @@ function getImgInputErrors(array $upload, string $tmpFile = ''): array {
 
     if ($tmpFilename !== '' && file_exists($tmpPath)) { // The PNG lives in /public/img/tmp/
         return []; // return early and don't even analyse raw image
+    } else if ($tmpFilename !== '' && !file_exists($tmpPath)) { // The PNG was supposed to be in /public/img/tmp/ but it's not there
+        return ["L'image n'a pas été trouvée. Veuillez réessayer."];
     }
 
     // 2. Fallback: raw image uploaded through form

@@ -33,9 +33,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($errors)) {
         $itemToBeAdded = new Item($category, $hue, $saturation, $brightness, new Season($season_id), $rate, '');
         $itemId = addItem($itemToBeAdded, $currentUserId);
-        MoveToActualImgPath(!empty($tmpFile) ? $tmpFile : $rawImg, $currentUserId, $itemId);
-        header('Location: wardrobe.php');
-        exit;
+        if (MoveToActualImgPath(!empty($tmpFile) ? $tmpFile : $rawImg, $currentUserId, $itemId)) {
+            header('Location: wardrobe.php');
+            exit;
+        }
+        $errors[] = "Erreur lors du déplacement de l'image vers le dossier final.";
     }
 }
 
@@ -115,8 +117,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="hidden" id="v" name="brightness" value="<?= htmlspecialchars($brightness) ?>">
 
                 <div class=" apercu" id="apercu">
+                </div>
             </div>
-        </div>
         </div>
 
         <div class="rate-select">
