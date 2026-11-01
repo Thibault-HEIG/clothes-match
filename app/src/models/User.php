@@ -5,19 +5,31 @@
  */
 
 class User {
-    private int $id;
+    private ?int $id;
     private string $name;
     private float $last_color_harmony_importance;
     private float $last_season_harmony_importance;
 
-    public function __construct(int $id, string $name, float $last_color_harmony_importance, float $last_season_harmony_importance) {
+    public function __construct(string $name, float $last_color_harmony_importance = 0.5, float $last_season_harmony_importance = 0.5, ?int $id = null) {
         $this->id = $id;
         $this->name = $name;
         $this->last_color_harmony_importance = $last_color_harmony_importance;
         $this->last_season_harmony_importance = $last_season_harmony_importance;
     }
 
+    public function getId(): int {
+        return $this->id;
+    }
+
     public function getName(): string {
         return $this->name;
+    }
+
+    public function getLastColorHarmonyImportance(): float {
+        return $this->last_color_harmony_importance;
+    }
+
+    public function getLastSeasonHarmonyImportance(): float {
+        return $this->last_season_harmony_importance;
     }
 }

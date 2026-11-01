@@ -3,11 +3,11 @@
 /*Season : représente une saison (printemps, été, automne, hiver).*/
 class Season {
     private int $id;
-    private string $name;
-    private int $avgTemperature;
+    private ?string $name;
+    private ?int $avgTemperature;
     private ?string $iconUrl;
 
-    public function __construct(int $id, string $name, int $avgTemperature, ?string $iconUrl) {
+    public function __construct(int $id, ?string $name = null, ?int $avgTemperature = null, ?string $iconUrl = null) {
         $this->id = $id;
         $this->name = $name;
         $this->avgTemperature = $avgTemperature;

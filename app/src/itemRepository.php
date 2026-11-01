@@ -1,6 +1,7 @@
 <?php
-require_once __DIR__ . '/../src/Database.php';
-require_once __DIR__ . '/../src/models/Item.php';
+require_once __DIR__ . '/Database.php';
+require_once __DIR__ . '/models/Item.php';
+require_once __DIR__ . '/constants.php';
 
 /**
  * Item repository : functions to manage items in the database.
@@ -19,14 +20,14 @@ function getItemById(int $id): ?Item {
         return null;
     }
     return new Item(
-        (int)$row['id'],
         $row['category'],
-        (float)$row['hue'],
-        (float)$row['saturation'],
-        (float)$row['brightness'],
+        (int)$row['hue'],
+        (int)$row['saturation'],
+        (int)$row['brightness'],
         new Season((int)$row['season_id'], $row['season_name'], (int)$row['avg_temperature'], $row['icon_url']),
         (int)$row['user_rate'],
-        $row['img_url']
+        $row['img_url'],
+        (int)$row['id'],
     );
 }
 
@@ -59,44 +60,90 @@ function getItemsByCategoryAndUserId(string $category, int $userId): array {
     $items = [];
     foreach ($rows as $row) {
         $items[] = new Item(
-            (int)$row['id'],
             $row['category'],
-            (float)$row['hue'],
-            (float)$row['saturation'],
-            (float)$row['brightness'],
+            (int)$row['hue'],
+            (int)$row['saturation'],
+            (int)$row['brightness'],
             new Season((int)$row['season_id'], $row['season_name'], (int)$row['avg_temperature'], $row['icon_url']),
             (int)$row['user_rate'],
-            $row['img_url']
+            $row['img_url'],
+            (int)$row['id'],
         );
     }
     return $items;
 }
 
 /*Ajoute un vêtement en base et retourne son id.*/
-function addItem(
-    string $imgUrl,
-    string $category,
-    int $seasonId,
-    float $hue,
-    float $saturation,
-    float $brightness,
-    int $userRate,
-    int $userId
-): int {
+function addItem(Item $item, int $userId): int {
     $pdo = Database::getPdo();
     $stmt = $pdo->prepare(
         'INSERT INTO clothes (img_url, category, season_id, hue, saturation, brightness, user_rate, user_id)
          VALUES (:img_url, :category, :season_id, :hue, :saturation, :brightness, :user_rate, :user_id)'
     );
     $stmt->execute([
-        ':img_url'    => $imgUrl,
-        ':category'   => $category,
-        ':season_id'  => $seasonId,
-        ':hue'        => $hue,
-        ':saturation' => $saturation,
-        ':brightness' => $brightness,
-        ':user_rate'  => $userRate,
+        ':img_url'    => $item->getImgUrl(),
+        ':category'   => $item->getCategory(),
+        ':season_id'  => $item->getSeason()->getId(),
+        ':hue'        => $item->getHue(),
+        ':saturation' => $item->getSaturation(),
+        ':brightness' => $item->getBrightness(),
+        ':user_rate'  => $item->getRate(),
         ':user_id'    => $userId,
     ]);
     return (int) $pdo->lastInsertId();
+}
+
+/**
+ * Update the temporary item image path into the user's upload directory.
+ * Update the database with the new path.
+ */
+function moveToActualImgPath(string|array $tmpFile, int $userId, int $itemId): bool {
+    $uploadDir = __DIR__ . '/../public/img/uploads/user_' . $userId;
+
+    if (!is_dir($uploadDir)) { // if user folder doesn't exist, we create it
+        mkdir($uploadDir, 0775, true);
+    }
+
+    $isInRepo = false; // If the image already stands in the repo (img/)
+    $sourcePath = '';
+    $extension = '';
+
+    // Case 1 : We got a response from the API
+    if (is_string($tmpFile)) {
+        // basename() strips any path traversal without needing complex prefix checks
+        $tmpFilename = basename($tmpFile);
+        $candidatePath = __DIR__ . '/../public/img/tmp/' . $tmpFilename;
+        if (file_exists($candidatePath)) {
+            $sourcePath = $candidatePath;
+            $extension = 'png';
+            $isInRepo = true;
+        }
+    }
+    // Case 2 : We fallback on the raw file
+    else if (empty($sourcePath) && is_array($tmpFile) && is_uploaded_file($tmpFile['tmp_name'])) {
+        $mime = mime_content_type($tmpFile['tmp_name']);
+        $sourcePath = $tmpFile['tmp_name'];
+        $extension = ALLOWED_IMAGE_TYPES[$mime];
+    }
+    // Case 3 : Unknown Error
+    else {
+        return false;
+    }
+
+    // Relative path for database (ex: img/uploads/user_1/item_42.png)
+    $dbPath = 'img/uploads/user_' . $userId . '/item_' . $itemId . '.' . $extension;
+    $destFullPath = $uploadDir . '/item_' . $itemId . '.' . $extension;
+
+    $moved = $isInRepo ? rename($sourcePath, $destFullPath) : move_uploaded_file($sourcePath, $destFullPath);
+
+    if (!$moved) {
+        return false;
+    }
+
+    $pdo = Database::getPdo();
+    $stmt = $pdo->prepare('UPDATE clothes SET img_url = :img_url WHERE id = :id');
+    return $stmt->execute([
+        ':img_url' => $dbPath,
+        ':id'      => $itemId,
+    ]);
 }

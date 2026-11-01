@@ -30,31 +30,31 @@
     INSERT INTO clothes (id, img_url, category, season_id, hue, saturation, brightness, user_rate, user_id)      
   VALUES
     -- Hauts (tops)
-    (1,  'img/uploads/user_1/item_1.jpg',   'top',       2,   0.0, 0.00, 0.95, 5, 1),
-    (2,  'img/uploads/user_1/item_2.jpg',   'top',       1, 215.0, 0.65, 0.35, 4, 1),
-    (3,  'img/uploads/user_1/item_3.jpg',   'top',       4,  38.0, 0.25, 0.82, 5, 1),
-    (4,  'img/uploads/user_2/item_4.jpg',   'top',       3,   0.0, 0.00, 0.12, 4, 2),
+    (1,  'img/uploads/user_1/item_1.png',   'top',       2,   0, 00, 95, 5, 1),
+    (2,  'img/uploads/user_1/item_2.png',   'top',       1, 215.0, 65, 35, 4, 1),
+    (3,  'img/uploads/user_1/item_3.png',   'top',       4,  38.0, 25, 82, 5, 1),
+    (4,  'img/uploads/user_2/item_4.png',   'top',       3,   0, 00, 12, 4, 2),
   
     -- Bas (bottoms)
-    (5,  'img/uploads/user_1/item_5.jpg',   'bottom',    3, 220.0, 0.55, 0.28, 5, 1),
-    (6,  'img/uploads/user_1/item_6.jpg',   'bottom',    1,  42.0, 0.32, 0.78, 4, 1),
-    (7,  'img/uploads/user_2/item_7.jpg',   'bottom',    4,   0.0, 0.00, 0.15, 4, 2),
-    (8,  'img/uploads/user_2/item_8.jpg',   'bottom',    2,  48.0, 0.18, 0.88, 3, 2),
+    (5,  'img/uploads/user_1/item_5.png',   'bottom',    3, 220, 55, 28, 5, 1),
+    (6,  'img/uploads/user_1/item_6.png',   'bottom',    1,  42.0, 32, 78, 4, 1),
+    (7,  'img/uploads/user_2/item_7.png',   'bottom',    4,   0, 00, 15, 4, 2),
+    (8,  'img/uploads/user_2/item_8.png',   'bottom',    2,  48.0, 18, 88, 3, 2),
   
     -- Chaussures (shoes)
-    (9,  'img/uploads/user_1/item_9.jpg',   'shoes',     2,   0.0, 0.00, 0.98, 5, 1),
-    (10, 'img/uploads/user_1/item_10.jpg',  'shoes',     4,  28.0, 0.58, 0.32, 4, 1),
-    (11, 'img/uploads/user_2/item_11.jpg',  'shoes',     3,   0.0, 0.00, 0.10, 4, 2),
+    (9,  'img/uploads/user_1/item_9.png',   'shoes',     2,   0, 00, 98, 5, 1),
+    (10, 'img/uploads/user_1/item_10.png',  'shoes',     4,  28.0, 58, 32, 4, 1),
+    (11, 'img/uploads/user_2/item_11.png',  'shoes',     3,   0, 00, 10, 4, 2),
   
     -- Vestes / Manteaux (jackets)
-    (12, 'img/uploads/user_1/item_12.jpg',  'jacket',    1, 210.0, 0.45, 0.42, 4, 1),
-    (13, 'img/uploads/user_1/item_13.jpg',  'jacket',    4, 205.0, 0.12, 0.22, 5, 1),
-    (14, 'img/uploads/user_2/item_14.jpg',  'jacket',    3, 140.0, 0.40, 0.35, 3, 2),
+    (12, 'img/uploads/user_1/item_12.png',  'jacket',    1, 210, 45, 42, 4, 1),
+    (13, 'img/uploads/user_1/item_13.png',  'jacket',    4, 205.0, 12, 22, 5, 1),
+    (14, 'img/uploads/user_2/item_14.png',  'jacket',    3, 140, 40, 35, 3, 2),
   
     -- Accessoires (accessories)
-    (15, 'img/uploads/user_1/item_15.jpg',  'accessory', 1,  30.0, 0.60, 0.25, 4, 1),
-    (16, 'img/uploads/user_1/item_16.jpg',  'accessory', 4,   0.0, 0.00, 0.60, 5, 1),
-    (17, 'img/uploads/user_2/item_17.jpg',  'accessory', 4, 350.0, 0.45, 0.30, 4, 2);
+    (15, 'img/uploads/user_1/item_15.png',  'accessory', 1,  30, 60, 25, 4, 1),
+    (16, 'img/uploads/user_1/item_16.png',  'accessory', 4,   0, 00, 60, 5, 1),
+    (17, 'img/uploads/user_2/item_17.png',  'accessory', 4, 350, 45, 30, 4, 2);
   
     -- --------------------------------------------------------
     -- 4. Tenues générées (results)
