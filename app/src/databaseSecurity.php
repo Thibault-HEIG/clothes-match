@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../src/constants.php';
 
-function getInputErrors(array|string $upload, string $tmpFile, string $category, int $season_id, int $hue, float $saturation, float $brightness, int $rate): array {
+function getInputErrors(array $upload, string $tmpFile, string $category, int $season_id, int $hue, int $saturation, int $brightness, int $rate): array {
     $errors = array_merge(
         getImgInputErrors($upload, $tmpFile),
         getCategoryInputErrors($category),
@@ -12,27 +12,22 @@ function getInputErrors(array|string $upload, string $tmpFile, string $category,
     return $errors;
 }
 
-function getImgInputErrors(array|string $upload, string $tmpFile = ''): array {
+function getImgInputErrors(array $upload, string $tmpFile = ''): array {
     // 1. Image processed by ClearBackdrop API
     $tmpFilename = basename($tmpFile);
     $tmpPath     = __DIR__ . '/../public/img/tmp/' . $tmpFilename;
 
-    if ($tmpFilename !== '' && file_exists($tmpPath)) {
-        return [];
-    }
-
-    if (is_string($upload)) {
-        $path = __DIR__ . '/../public/' . $upload;
-        return ($upload !== '' && file_exists($path)) ? [] : ["Format de photo non accepté ou erreur lors du téléchargement."];
+    if ($tmpFilename !== '' && file_exists($tmpPath)) { // The PNG lives in /public/img/tmp/
+        return []; // return early and don't even analyse raw image
     }
 
     // 2. Fallback: raw image uploaded through form
-    if (empty($upload['tmp_name']) || $upload['error'] !== UPLOAD_ERR_OK) {
+    if (empty($upload['tmp_name']) || $upload['error'] !== UPLOAD_ERR_OK) { // Problem
         return ["Format de photo non accepté ou erreur lors du téléchargement."];
     }
 
     $mime = mime_content_type($upload['tmp_name']);
-    if (!array_key_exists($mime, ALLOWED_IMAGE_TYPES)) {
+    if (!array_key_exists($mime, ALLOWED_IMAGE_TYPES)) { // Type not allowed
         return ["Format de photo non accepté ou erreur lors du téléchargement."];
     }
 

@@ -31,39 +31,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $errors = getInputErrors($rawImg, $tmpFile, $category, $season_id, $hue, $saturation, $brightness, $rate);
 
     if (empty($errors)) {
-        $imgUrl = saveItemImage($tmpFile, $rawImg, $currentUserId);
-        addItem($imgUrl, $category, $season_id, $hue, $saturation, $brightness, $rate, $currentUserId);
-        header('Location: index.php#wardrobe');
+        $itemToBeAdded = new Item($category, $hue, $saturation, $brightness, new Season($season_id), $rate, '');
+        $itemId = addItem($itemToBeAdded, $currentUserId);
+        MoveToActualImgPath(!empty($tmpFile) ? $tmpFile : $rawImg, $currentUserId, $itemId);
+        header('Location: wardrobe.php');
         exit;
     }
-}
-
-/**
- * Saves the item image into the user's upload directory.
- * Uses the API-processed transparent PNG if available, otherwise falls back to the raw upload.
- */
-function saveItemImage(string $tmpFile, array $upload, int $userId): ?string {
-    $uploadDir = 'img/uploads/user_' . $userId;
-    if (!is_dir(__DIR__ . '/' . $uploadDir)) {
-        mkdir(__DIR__ . '/' . $uploadDir, 0775, true);
-    }
-
-    // 1. Image processed by ClearBackdrop API
-    // basename() strips any path traversal without needing complex prefix checks
-    $tmpFilename = basename($tmpFile);
-    $tmpPath     = __DIR__ . '/img/tmp/' . $tmpFilename;
-
-    if ($tmpFilename !== '' && file_exists($tmpPath)) {
-        $destUrl = $uploadDir . '/' . uniqid('item_') . '.png';
-        rename($tmpPath, __DIR__ . '/' . $destUrl);
-        return $destUrl;
-    }
-
-    // 2. Fallback: raw image uploaded through form
-    $mime = mime_content_type($upload['tmp_name']);
-    $destUrl = $uploadDir . '/' . uniqid('item_') . '.' . ALLOWED_IMAGE_TYPES[$mime];
-    move_uploaded_file($upload['tmp_name'], __DIR__ . '/' . $destUrl);
-    return $destUrl;
 }
 
 ?>

@@ -19,6 +19,10 @@ app/
 │   ├── addItem.php                 # Form to add a new clothing item
 │   ├── generateOutfit.php          # Form to generate a new outfit
 │   │
+│   ├── api/                        # Web API endpoints
+│   │   ├── removeBackground.php    # ClearBackdrop background-removal proxy
+│   │   └── ClearDropAPI.md         # Upload & API workflow documentation
+│   │
 │   ├── components/                 # Reusable PHP partials, rendered via src/renderer.php
 │   │   ├── head.php                # HTML <head> (charset, viewport, CSS imports, title/description)
 │   │   └── footer.php              # Page footer with author credits

@@ -16,9 +16,9 @@ function getUserById(int $id): ?User {
         return null;
     }
     return new User(
-        (int)$row['id'],
         $row['name'],
         (float)$row['last_color_harmony_importance'],
-        (float)$row['last_season_harmony_importance']
+        (float)$row['last_season_harmony_importance'],
+        (int)$row['id']
     );
 }
