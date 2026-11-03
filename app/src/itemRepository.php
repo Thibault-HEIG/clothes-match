@@ -110,7 +110,7 @@ function moveToActualImgPath(string|array $tmpFile, int $userId, int $itemId): b
         // basename() strips any path traversal without needing complex prefix checks
         $tmpFilename = basename($tmpFile);
         $candidatePath = __DIR__ . '/../public/img/tmp/' . $tmpFilename;
-        if (file_exists($candidatePath)) {
+        if (file_exists($candidatePath) && $tmpFilename !== '') {
             $sourcePath = $candidatePath;
             $extension = 'png';
             $isInRepo = true;
