@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $errors = getInputErrors($rawImg, $tmpFile, $category, $season_id, $hue, $saturation, $brightness, $rate);
 
     if (empty($errors)) {
-        $itemToBeAdded = new Item($category, $hue, $saturation, $brightness, new Season($season_id), $rate, '');
+        $itemToBeAdded = new Item($category, new Season($season_id), new Color($hue, $saturation, $brightness), $rate, '');
         $itemId = addItem($itemToBeAdded, $currentUserId);
         if (MoveToActualImgPath(!empty($tmpFile) ? $tmpFile : $rawImg, $currentUserId, $itemId)) {
             header('Location: wardrobe.php');

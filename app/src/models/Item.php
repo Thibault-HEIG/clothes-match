@@ -7,19 +7,14 @@ require_once __DIR__ . '/Season.php';
 class Item {
     private ?int $id;
     private string $category;
-    private int $hue;
-    private int $saturation;
-    private int $brightness;
+    private Color $color;
     private Season $season;
     private int $user_rate;
     private string $img_url;
 
-    public function __construct(string $category, int $hue, int $saturation, int $brightness, Season $season, int $user_rate, string $img_url, ?int $id = null) {
+    public function __construct(string $category, Season $season, Color $color, int $user_rate, string $img_url, ?int $id = null) {
         $this->id = $id;
         $this->category = $category;
-        $this->hue = $hue;
-        $this->saturation = $saturation;
-        $this->brightness = $brightness;
         $this->season = $season;
         $this->user_rate = $user_rate;
         $this->img_url = $img_url;
@@ -41,15 +36,8 @@ class Item {
         return $this->season;
     }
 
-    public function getHue(): int {
-        return $this->hue;
+    public function getColor(): Color {
+        return $this->color;
     }
 
-    public function getSaturation(): int {
-        return $this->saturation;
-    }
-
-    public function getBrightness(): int {
-        return $this->brightness;
-    }
 }

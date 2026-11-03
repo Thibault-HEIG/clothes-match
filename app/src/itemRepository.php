@@ -2,6 +2,7 @@
 require_once __DIR__ . '/Database.php';
 require_once __DIR__ . '/models/Item.php';
 require_once __DIR__ . '/constants.php';
+require_once __DIR__ . '/../src/models/Color.php';
 
 /**
  * Item repository : functions to manage items in the database.
@@ -21,10 +22,8 @@ function getItemById(int $id): ?Item {
     }
     return new Item(
         $row['category'],
-        (int)$row['hue'],
-        (int)$row['saturation'],
-        (int)$row['brightness'],
         new Season((int)$row['season_id'], $row['season_name'], (int)$row['avg_temperature'], $row['icon_url']),
+        new Color($row['hue'], $row['saturation'], $row['brightness']),
         (int)$row['user_rate'],
         $row['img_url'],
         (int)$row['id'],
@@ -61,10 +60,8 @@ function getItemsByCategoryAndUserId(string $category, int $userId): array {
     foreach ($rows as $row) {
         $items[] = new Item(
             $row['category'],
-            (int)$row['hue'],
-            (int)$row['saturation'],
-            (int)$row['brightness'],
             new Season((int)$row['season_id'], $row['season_name'], (int)$row['avg_temperature'], $row['icon_url']),
+            new Color($row['hue'], $row['saturation'], $row['brightness']),
             (int)$row['user_rate'],
             $row['img_url'],
             (int)$row['id'],
@@ -84,9 +81,9 @@ function addItem(Item $item, int $userId): int {
         ':img_url'    => $item->getImgUrl(),
         ':category'   => $item->getCategory(),
         ':season_id'  => $item->getSeason()->getId(),
-        ':hue'        => $item->getHue(),
-        ':saturation' => $item->getSaturation(),
-        ':brightness' => $item->getBrightness(),
+        ':hue'        => $item->getColor()->getHue(),
+        ':saturation' => $item->getColor()->getSaturation(),
+        ':brightness' => $item->getColor()->getBrightness(),
         ':user_rate'  => $item->getRate(),
         ':user_id'    => $userId,
     ]);
