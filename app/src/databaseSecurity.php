@@ -1,12 +1,12 @@
 <?php
 require_once __DIR__ . '/../src/constants.php';
 
-function getInputErrors(array $upload, string $tmpFile, string $category, int $season_id, int $hue, int $saturation, int $brightness, int $rate): array {
+function getInputErrors(array $upload, string $tmpFile, string $category, int $season_id, Color $color, int $rate): array {
     $errors = array_merge(
         getImgInputErrors($upload, $tmpFile),
         getCategoryInputErrors($category),
         getSeasonInputErrors($season_id),
-        getColorInputErrors($hue, $saturation, $brightness),
+        getColorInputErrors($color),
         getRateInputErrors($rate)
     );
     return $errors;
@@ -36,7 +36,11 @@ function getImgInputErrors(array $upload, string $tmpFile = ''): array {
     return [];
 }
 
-function getColorInputErrors(int $hue, float $saturation, float $brightness): array {
+function getColorInputErrors(Color $color): array {
+    $hue = $color->getHue();
+    $saturation = $color->getSaturation();
+    $brightness = $color->getBrightness();
+
     // Par défaut, il n'y a pas d'erreurs
     $errors = [];
     if ($hue < LIMITS['h'][0] || $hue > LIMITS['h'][1]) {

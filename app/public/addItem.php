@@ -7,7 +7,10 @@ require_once __DIR__ . '/../src/databaseSecurity.php';
 
 $currentUserId = 1; // ID de l'utilisateur actuel (à remplacer par la session plus tard)
 
-$seasons = getAllSeasons();
+$seasonRepo = new seasonRepository();
+$itemRepo  = new itemRepository();
+
+$seasons = $seasonRepo->getAll();
 $errors   = [];
 
 $category = $_POST['category'] ?? '';
@@ -28,12 +31,14 @@ $tmpFile = $_POST['tmp_file'] ?? '';
 // ---------------------------------------------------------------------------
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $errors = getInputErrors($rawImg, $tmpFile, $category, $season_id, $hue, $saturation, $brightness, $rate);
+    $color = new Color($hue, $saturation, $brightness);
+
+    $errors = getInputErrors($rawImg, $tmpFile, $category, $season_id, $color, $rate);
 
     if (empty($errors)) {
-        $itemToBeAdded = new Item($category, new Season($season_id), new Color($hue, $saturation, $brightness), $rate, '');
-        $itemId = addItem($itemToBeAdded, $currentUserId);
-        if (MoveToActualImgPath(!empty($tmpFile) ? $tmpFile : $rawImg, $currentUserId, $itemId)) {
+        $itemToBeAdded = new Item($category, new Season($season_id), $color, $rate, '');
+        $itemId = $itemRepo->insert($itemToBeAdded, $currentUserId);
+        if ($itemRepo->MoveToActualImgPath(!empty($tmpFile) ? $tmpFile : $rawImg, $currentUserId, $itemId)) {
             header('Location: wardrobe.php');
             exit;
         }

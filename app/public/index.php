@@ -3,8 +3,10 @@ require_once __DIR__ . '/../src/renderer.php';
 require_once __DIR__ . '/../src/userRepository.php';
 require_once __DIR__ . '/../src/constants.php';
 
+$userRepo = new userRepository();
+
 $currentUserId = 1; // ID de l'utilisateur actuel
-$user = getUserById($currentUserId);
+$user = $userRepo->getById($currentUserId);
 $name = $user->getName();
 ?>
 

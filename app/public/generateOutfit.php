@@ -5,20 +5,7 @@ require_once '../src/outfitRepository.php';
 $seedImagePath = null;
 
 // Gestion de la soumission du formulaire
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    // Validation
-    $errors = validateGeneration();
-
-    if (empty($errors)) {
-        $newOutfitId = createOutfit();
-        if ($newOutfitId !== null) {
-            header('Location: ./index.php?id=' . $newOutfitId);
-            exit;
-        } else {
-            $errors = array_push($errors, "Error lors de la création de l'outfit.");
-        }
-    }
-}
+if ($_SERVER["REQUEST_METHOD"] === "POST") {}
 ?>
 
 <!DOCTYPE html>
