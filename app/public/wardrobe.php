@@ -3,9 +3,11 @@ require_once __DIR__ . '/../src/renderer.php';
 require_once __DIR__ . '/../src/itemRepository.php';
 require_once __DIR__ . '/../src/models/Item.php';
 
+$itemRepo = new itemRepository();
+
 $currentUserId = 1; // ID de l'utilisateur actuel
 
-$clothesCount = getItemsCountByUserId($currentUserId);
+$clothesCount = $itemRepo->getItemsCountByUserId($currentUserId);
 
 $category = $_GET['category'] ?? '';
 ?>
@@ -42,7 +44,7 @@ $category = $_GET['category'] ?? '';
                     </a>
                 </div>
                 <?php
-                $items = getItemsByCategoryAndUserId($category, $currentUserId);
+                $items = $itemRepo->getAll($category, $currentUserId);
                 foreach ($items as $item) {
                     echo '<div class="wardrobe-item-container">';
                     echo '<img src="' . htmlspecialchars($item->getImgUrl()) . '" class="wardrobe-item" data-category="' . htmlspecialchars($item->getCategory()) . '">';
