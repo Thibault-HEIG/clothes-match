@@ -1,11 +1,11 @@
 <?php
+require_once __DIR__ . '/Repository.php';
+require_once __DIR__ . '/../models/Season.php';
 
-class seasonRepository extends Repository {
+class SeasonRepository extends Repository {
 
-    #[Override]
     public function getAll(): array {
-        $pdo = Database::getPdo();
-        $stmt = $pdo->query("SELECT * FROM seasons ORDER BY id");
+        $stmt = $this->pdo->query("SELECT * FROM seasons ORDER BY id");
         $rows = $stmt->fetchAll();
 
         $seasons = [];
@@ -22,10 +22,12 @@ class seasonRepository extends Repository {
 
     #[Override]
     public function getById(int $seasonId): ?Season {
-        $pdo = Database::getPdo();
-        $stmt = $pdo->query("SELECT * FROM seasons WHERE id = :id");
+        $stmt = $this->pdo->prepare("SELECT * FROM seasons WHERE id = :id");
         $stmt->execute(['id' => $seasonId]);
         $row = $stmt->fetch();
+        if (!$row) {
+            return null;
+        }
         return new Season((int)$row['id'], $row['name'], (int)$row['avg_temperature'], $row['icon_url']);
     }
 }

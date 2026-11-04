@@ -1,9 +1,9 @@
 <?php
 require_once __DIR__ . '/../src/renderer.php';
-require_once __DIR__ . '/../src/userRepository.php';
+require_once __DIR__ . '/../src/repositories/UserRepository.php';
 require_once __DIR__ . '/../src/constants.php';
 
-$userRepo = new userRepository();
+$userRepo = new UserRepository();
 
 $currentUserId = 1; // ID de l'utilisateur actuel
 $user = $userRepo->getById($currentUserId);

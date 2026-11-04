@@ -1,14 +1,14 @@
 <?php
 require_once __DIR__ . '/../src/renderer.php';
-require_once __DIR__ . '/../src/itemRepository.php';
-require_once __DIR__ . '/../src/seasonRepository.php';
+require_once __DIR__ . '/../src/repositories/ItemRepository.php';
+require_once __DIR__ . '/../src/repositories/SeasonRepository.php';
 require_once __DIR__ . '/../src/constants.php';
 require_once __DIR__ . '/../src/databaseSecurity.php';
 
 $currentUserId = 1; // ID de l'utilisateur actuel (à remplacer par la session plus tard)
 
-$seasonRepo = new seasonRepository();
-$itemRepo  = new itemRepository();
+$seasonRepo = new SeasonRepository();
+$itemRepo  = new ItemRepository();
 
 $seasons = $seasonRepo->getAll();
 $errors   = [];
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($errors)) {
         $itemToBeAdded = new Item($category, new Season($season_id), $color, $rate, '');
         $itemId = $itemRepo->insert($itemToBeAdded, $currentUserId);
-        if ($itemRepo->MoveToActualImgPath(!empty($tmpFile) ? $tmpFile : $rawImg, $currentUserId, $itemId)) {
+        if ($itemRepo->moveToActualImgPath(!empty($tmpFile) ? $tmpFile : $rawImg, $currentUserId, $itemId)) {
             header('Location: wardrobe.php');
             exit;
         }

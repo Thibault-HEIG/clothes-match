@@ -1,16 +1,16 @@
 <?php
-require_once __DIR__ . '/../src/Database.php';
-require_once __DIR__ . '/../src/models/User.php';
+require_once __DIR__ . '/Repository.php';
+require_once __DIR__ . '/IDelete.php';
+require_once __DIR__ . '/../models/User.php';
 
 /**
  * User repository : functions to manage users in the database.
  */
-class userRepository extends Repository implements IInsert, IUpdate, IDelete {
+class UserRepository extends Repository implements IDelete {
 
     #[Override]
     public function getById(int $userId): ?User {
-        $pdo = Database::getPdo();
-        $stmt = $pdo->prepare("SELECT * FROM users WHERE id = :id");
+        $stmt = $this->pdo->prepare("SELECT * FROM users WHERE id = :id");
         $stmt->execute(['id' => $userId]);
         $row = $stmt->fetch();
 
@@ -25,24 +25,11 @@ class userRepository extends Repository implements IInsert, IUpdate, IDelete {
         );
     }
 
-    #[Override]
-    public function getAll(): array {
-        return []; // Not implemented yet
-    }
-
-    #[Override]
-    public function insert(Object $user): int {
-        if (!$user instanceof User) {
-            throw new InvalidArgumentException('Expected a User.');
-        }
+    public function insert(User $user): int {
         return 0; // Not implemented yet
     }
 
-    #[Override]
-    public function update(Object $user): bool {
-        if (!$user instanceof User) {
-            throw new InvalidArgumentException('Expected a User.');
-        }
+    public function update(User $user): bool {
         return false; // Not implemented yet
     }
 

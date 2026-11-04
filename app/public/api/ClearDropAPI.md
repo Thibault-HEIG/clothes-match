@@ -13,9 +13,9 @@ Voir [cleardrop.com](https://clearbackdrop.com/api) pour la documentation.
    Le proxy transmet l'image à ClearBackdrop API avec le token `BG_REMOVER_API`. Le PNG détouré est sauvegardé dans `app/public/img/tmp/tmp_<id>.png` et son chemin est renvoyé au navigateur.
 
 3. **Soumission ([`addItem.php`](public/addItem.php)) :**  
-   Le formulaire valide les champs ([`databaseSecurity.php`](src/databaseSecurity.php)) et insère la ligne en base ([`addItem()`](src/itemRepository.php#L76)) pour générer l'identifiant `$itemId`.
+   Le formulaire valide les champs ([`databaseSecurity.php`](src/databaseSecurity.php)) et insère la ligne en base ([`insert()`](src/repositories/ItemRepository.php)) pour générer l'identifiant `$itemId`.
 
-4. **Déplacement final ([`moveToActualImgPath()`](src/itemRepository.php#L100)) :**  
+4. **Déplacement final ([`moveToActualImgPath()`](src/repositories/ItemRepository.php)) :**  
    Le PNG détouré (ou l'image brute si l'API a échoué) est déplacé vers `app/public/img/uploads/user_<id>/item_<itemId>.png` et la DB est mise à jour. Le fichier temporaire est ensuite supprimé.
 
 ---

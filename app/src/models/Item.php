@@ -16,6 +16,7 @@ class Item {
         $this->id = $id;
         $this->category = $category;
         $this->season = $season;
+        $this->color = $color;
         $this->user_rate = $user_rate;
         $this->img_url = $img_url;
     }

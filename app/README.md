@@ -40,8 +40,15 @@ app/
     ├── Database.php                # Singleton PDO connection
     ├── constants.php               # Shared application constants
     ├── renderer.php                # render($component, $data) helper
-    ├── itemRepository.php          # DB queries for items (get by id, get by user, insert, delete…)
-    ├── userRepository.php          # DB queries for users (get by id, update preferences…)
+    ├── databaseSecurity.php        # Input validation helpers
+    │
+    ├── repositories/               # Data access layer
+    │   ├── Repository.php          # Base abstract repository with PDO connection
+    │   ├── IGet.php, IDelete.php…  # CRUD interfaces
+    │   ├── ItemRepository.php      # DB queries for items
+    │   ├── UserRepository.php      # DB queries for users
+    │   ├── SeasonRepository.php    # DB queries for seasons
+    │   └── OutfitRepository.php    # DB queries for outfits
     │
     ├── models/
     │   ├── Item.php                # Item entity: id, category, hue/saturation/brightness, season, rating, image URL

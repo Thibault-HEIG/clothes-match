@@ -1,22 +1,15 @@
 <?php
+require_once __DIR__ . '/Repository.php';
+require_once __DIR__ . '/../models/Outfit.php';
 
-class outfitRepository extends Repository implements IInsert {
+class OutfitRepository extends Repository {
 
-    #[Override]
-    public function insert(object $outfit): int {
-        if (!$outfit instanceof Outfit) {
-            throw new InvalidArgumentException('Expected an Outfit.');
-        }
+    public function insert(Outfit $outfit): int {
         return 0; // Not implemented yet
     }
 
     #[Override]
     public function getById(int $id): ?Outfit {
         return null; // Not implemented yet
-    }
-
-    #[Override]
-    public function getAll(int $userId = 0): array {
-        return []; // Not implemented yet
     }
 }

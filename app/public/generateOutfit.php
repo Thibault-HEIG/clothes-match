@@ -1,5 +1,6 @@
 <?php
-require_once '../src/outfitRepository.php';
+require_once __DIR__ . '/../src/renderer.php';
+require_once __DIR__ . '/../src/repositories/OutfitRepository.php';
 
 // Default values for the form fields
 $seedImagePath = null;

@@ -1,18 +1,20 @@
 <?php
-require_once __DIR__ . '/Database.php';
-require_once __DIR__ . '/models/Item.php';
-require_once __DIR__ . '/constants.php';
-require_once __DIR__ . '/../src/models/Color.php';
+require_once __DIR__ . '/Repository.php';
+require_once __DIR__ . '/IDelete.php';
+require_once __DIR__ . '/../Database.php';
+require_once __DIR__ . '/../constants.php';
+require_once __DIR__ . '/../models/Item.php';
+require_once __DIR__ . '/../models/Season.php';
+require_once __DIR__ . '/../models/Color.php';
 
 /**
  * Item repository : functions to manage items in the database.
  */
-class itemRepository extends Repository implements IInsert, IUpdate, IDelete {
+class ItemRepository extends Repository implements IDelete {
 
     #[Override]
     public function getById(int $id): ?Item {
-        $pdo = Database::getPdo();
-        $stmt = $pdo->prepare("SELECT clothes.*, seasons.name AS season_name, seasons.avg_temperature, seasons.icon_url
+        $stmt = $this->pdo->prepare("SELECT clothes.*, seasons.name AS season_name, seasons.avg_temperature, seasons.icon_url
     FROM clothes
     JOIN seasons ON clothes.season_id = seasons.id
     WHERE clothes.id = :id");
@@ -33,29 +35,26 @@ class itemRepository extends Repository implements IInsert, IUpdate, IDelete {
     }
 
     public function getItemsCountByUserId(int $userId): int {
-        $pdo = Database::getPdo();
-        $stmt = $pdo->prepare("SELECT COUNT(*) as count FROM clothes WHERE user_id = :user_id");
+        $stmt = $this->pdo->prepare("SELECT COUNT(*) as count FROM clothes WHERE user_id = :user_id");
         $stmt->execute(['user_id' => $userId]);
         $row = $stmt->fetch();
 
         return (int)$row['count'];
     }
 
-    #[Override]
-    public function getAll(string $category = '', int $userId = 0): array {
+    public function getAllByCatgegoryAndUserId(string $category = '', int $userId = 0): array {
         if ($userId <= 0) {
             throw new InvalidArgumentException('Invalid user ID.');
         }
 
-        $pdo = Database::getPdo();
         if ($category !== '') {
-            $stmt = $pdo->prepare("SELECT clothes.*, seasons.name AS season_name, seasons.avg_temperature, seasons.icon_url
+            $stmt = $this->pdo->prepare("SELECT clothes.*, seasons.name AS season_name, seasons.avg_temperature, seasons.icon_url
     FROM clothes
     JOIN seasons ON clothes.season_id = seasons.id
     WHERE clothes.category = :category AND clothes.user_id = :user_id");
             $stmt->execute(['category' => $category, 'user_id' => $userId]);
         } else {
-            $stmt = $pdo->prepare("SELECT clothes.*, seasons.name AS season_name, seasons.avg_temperature, seasons.icon_url
+            $stmt = $this->pdo->prepare("SELECT clothes.*, seasons.name AS season_name, seasons.avg_temperature, seasons.icon_url
     FROM clothes
     JOIN seasons ON clothes.season_id = seasons.id
     WHERE clothes.user_id = :user_id");
@@ -78,17 +77,9 @@ class itemRepository extends Repository implements IInsert, IUpdate, IDelete {
     }
 
     /*Ajoute un vêtement en base et retourne son id.*/
-    #[Override]
-    public function insert(Object $item, int $userId = 0): int {
-        if (!$item instanceof Item) {
-            throw new InvalidArgumentException('Expected an Item.');
-        }
-        if ($userId <= 0) {
-            throw new InvalidArgumentException('Invalid user ID.');
-        }
+    public function insert(Item $item, int $userId): int {
 
-        $pdo = Database::getPdo();
-        $stmt = $pdo->prepare(
+        $stmt = $this->pdo->prepare(
             'INSERT INTO clothes (img_url, category, season_id, hue, saturation, brightness, user_rate, user_id)
          VALUES (:img_url, :category, :season_id, :hue, :saturation, :brightness, :user_rate, :user_id)'
         );
@@ -102,15 +93,11 @@ class itemRepository extends Repository implements IInsert, IUpdate, IDelete {
             ':user_rate'  => $item->getRate(),
             ':user_id'    => $userId,
         ]);
-        return (int) $pdo->lastInsertId();
+        return (int) $this->pdo->lastInsertId();
     }
 
     /*Modifie un vêtement en base avec de nouvelles données.*/
-    #[Override]
-    public function update(Object $item): bool {
-        if (!$item instanceof Item) {
-            throw new InvalidArgumentException('Expected an Item.');
-        }
+    public function update(Item $item): bool {
         return false; // Not implemented yet
     }
 
@@ -125,7 +112,7 @@ class itemRepository extends Repository implements IInsert, IUpdate, IDelete {
      * Update the database with the new path.
      */
     public function moveToActualImgPath(string|array $tmpFile, int $userId, int $itemId): bool {
-        $uploadDir = __DIR__ . '/../public/img/uploads/user_' . $userId;
+        $uploadDir = __DIR__ . '/../../public/img/uploads/user_' . $userId;
 
         if (!is_dir($uploadDir)) { // if user folder doesn't exist, we create it
             mkdir($uploadDir, 0775, true);
@@ -139,7 +126,7 @@ class itemRepository extends Repository implements IInsert, IUpdate, IDelete {
         if (is_string($tmpFile)) {
             // basename() strips any path traversal without needing complex prefix checks
             $tmpFilename = basename($tmpFile);
-            $candidatePath = __DIR__ . '/../public/img/tmp/' . $tmpFilename;
+            $candidatePath = __DIR__ . '/../../public/img/tmp/' . $tmpFilename;
             if (file_exists($candidatePath) && $tmpFilename !== '') {
                 $sourcePath = $candidatePath;
                 $extension = 'png';
@@ -167,8 +154,7 @@ class itemRepository extends Repository implements IInsert, IUpdate, IDelete {
             return false;
         }
 
-        $pdo = Database::getPdo();
-        $stmt = $pdo->prepare('UPDATE clothes SET img_url = :img_url WHERE id = :id');
+        $stmt = $this->pdo->prepare('UPDATE clothes SET img_url = :img_url WHERE id = :id');
         return $stmt->execute([
             ':img_url' => $dbPath,
             ':id'      => $itemId,
