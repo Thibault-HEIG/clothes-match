@@ -13,7 +13,8 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     last_color_harmony_importance DOUBLE, -- [0,1]
-    last_season_harmony_importance DOUBLE -- [0,1]
+    last_season_harmony_importance DOUBLE, -- [0,1]
+    secret_token VARCHAR(32) NOT NULL UNIQUE
 );
 
 
@@ -23,9 +24,9 @@ CREATE TABLE IF NOT EXISTS clothes (
     img_url VARCHAR(500) NOT NULL,
     category VARCHAR(20) NOT NULL,
     season_id INT NOT NULL,
-    hue DOUBLE NOT NULL,
-    saturation DOUBLE NOT NULL,
-    brightness DOUBLE NOT NULL,
+    hue INT NOT NULL, -- [0,360]
+    saturation INT NOT NULL, -- [0,100]
+    brightness INT NOT NULL, -- [0,100]
     user_rate INT NOT NULL,
     user_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id),

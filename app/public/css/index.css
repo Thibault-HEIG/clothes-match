@@ -4,40 +4,43 @@
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   Base
-   -------------------------------------------------------------------------- */
-body {
-	font-family: var(--font-sans);
-	background-color: var(--clr-linen);
-	color: var(--clr-ink);
-	-webkit-font-smoothing: antialiased;
-}
-
-/* --------------------------------------------------------------------------
    Header
    -------------------------------------------------------------------------- */
 header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: var(--gap-sm) var(--gap-lg);
+	padding: var(--gap-sm) var(--gap-md) var(--gap-sm) var(--gap-lg);
 	background-color: var(--clr-linen);
 	border-bottom: 1px solid var(--clr-linen-border);
 	position: sticky;
 	top: 0;
 	z-index: 100;
 
+	&#wardrobe-header {
+		padding-top: var(--gap-md);
+		border-bottom: none;
+	}
+
 	#logo {
 		height: 2rem;
 		width: auto;
 	}
 
-	#settings {
-		width: 1.5rem;
-		height: 1.5rem;
-		opacity: 0.5;
-		cursor: pointer;
-		transition: opacity var(--transition);
+	a {
+		display: flex;
+		flex-direction: column;
+		gap: 0.2rem;
+		align-items: center;
+		color: var(--clr-ink);
+		font-size: 0.6rem;
+		font-weight: 500;
+		transition: color var(--transition);
+		opacity: 0.8;
+
+		#wardrobe-icon {
+			width: 2rem;
+		}
 
 		&:hover {
 			opacity: 1;
@@ -48,7 +51,7 @@ header {
 /* --------------------------------------------------------------------------
    Hero
    -------------------------------------------------------------------------- */
-hero {
+#hero {
 	display: block;
 	padding: var(--gap-lg) var(--gap-lg) var(--gap-lg);
 
@@ -125,7 +128,9 @@ hero {
 		border: 1px solid var(--clr-linen-border);
 		border-radius: var(--radius-md);
 		padding: var(--gap-sm);
-		transition: transform var(--transition), box-shadow var(--transition);
+		transition:
+			transform var(--transition),
+			box-shadow var(--transition);
 
 		&:hover {
 			transform: translateY(-3px);
@@ -159,7 +164,9 @@ hero {
 			border-radius: var(--radius-pill);
 			border: none;
 			cursor: pointer;
-			transition: background-color var(--transition), color var(--transition),
+			transition:
+				background-color var(--transition),
+				color var(--transition),
 				box-shadow var(--transition);
 
 			/* Primary: solid violet */
@@ -192,9 +199,10 @@ hero {
    -------------------------------------------------------------------------- */
 #wardrobe {
 	padding: var(--gap-lg);
+	padding-top: 0;
 
 	/* Header row: title + count */
-	&>div:first-child {
+	& > div:first-child {
 		margin-bottom: var(--gap-md);
 
 		h2 {
@@ -225,7 +233,9 @@ hero {
 				border-radius: var(--radius-pill);
 				color: var(--clr-ink-muted);
 				border: 1px solid transparent;
-				transition: color var(--transition), background-color var(--transition),
+				transition:
+					color var(--transition),
+					background-color var(--transition),
 					border-color var(--transition);
 
 				&:hover {
@@ -263,7 +273,9 @@ hero {
 		border: 1px solid var(--clr-linen-border);
 		border-radius: var(--radius-md);
 		padding: var(--gap-xs);
-		transition: transform var(--transition), box-shadow var(--transition);
+		transition:
+			transform var(--transition),
+			box-shadow var(--transition);
 
 		&:hover {
 			box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
@@ -284,7 +296,9 @@ hero {
 		background-color: var(--clr-violet-pale);
 		border: 1.5px dashed var(--clr-violet-light);
 		border-radius: var(--radius-md);
-		transition: background-color var(--transition), border-color var(--transition);
+		transition:
+			background-color var(--transition),
+			border-color var(--transition);
 
 		&:hover {
 			background-color: #dde0ff;
@@ -327,8 +341,12 @@ hero {
 	display: block;
 	height: var(--size);
 	width: calc(var(--size) * 5);
-	-webkit-mask: url("../img/icons/star.svg") repeat-x center / var(--size) var(--size);
-	        mask: url("../img/icons/star.svg") repeat-x center / var(--size) var(--size);
-	background-image: linear-gradient(to right, rgb(231, 201, 33) var(--fill), rgba(255, 255, 255, 0.35) var(--fill));
+	-webkit-mask: url("../img/icons/star.svg") repeat-x center / var(--size)
+		var(--size);
+	mask: url("../img/icons/star.svg") repeat-x center / var(--size) var(--size);
+	background-image: linear-gradient(
+		to right,
+		rgb(231, 201, 33) var(--fill),
+		rgba(255, 255, 255, 0.35) var(--fill)
+	);
 }
-
