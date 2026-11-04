@@ -13,14 +13,14 @@
     -- 2. Utilisateurs                                                                                           
     -- (password = "password123" hashé via bcrypt)                                                               
     -- --------------------------------------------------------                                                  
-    INSERT INTO users (id, name, email, password, last_color_harmony_importance, last_season_harmony_importance) 
+    INSERT INTO users (id, name, email, password, last_color_harmony_importance, last_season_harmony_importance, secret_token) 
   VALUES                                                                                                         
     (1, 'Alice', 'alice.martin@example.com', '$2y$12$e8Yk1m4gA27YnIuN2xZ/g.wZkQ52kC76F8M.                 
-  G/Jk2X7x9wL40mYqK', 0.75, 0.25),                                                                               
+  G/Jk2X7x9wL40mYqK', 0.75, 0.25, 'a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p4'),                                                                               
     (2, 'Bob',   'bob.dupont@example.com',   '$2y$12$e8Yk1m4gA27YnIuN2xZ/g.wZkQ52kC76F8M.                 
-  G/Jk2X7x9wL40mYqK', 0.15, 0.85),                                                                               
+  G/Jk2X7x9wL40mYqK', 0.15, 0.85, 'a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p5'),                                                                               
     (3, 'Chloé',  'chloe.viret@example.com',  '$2y$12$e8Yk1m4gA27YnIuN2xZ/g.wZkQ52kC76F8M.
-  G/Jk2X7x9wL40mYqK', 0.60, 0.40);
+  G/Jk2X7x9wL40mYqK', 0.60, 0.40, 'a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6');
   
     -- --------------------------------------------------------
     -- 3. Vêtements (clothes)
@@ -30,31 +30,31 @@
     INSERT INTO clothes (id, img_url, category, season_id, hue, saturation, brightness, user_rate, user_id)      
   VALUES
     -- Hauts (tops)
-    (1,  'img/uploads/user_1/item_1.png',   'top',       2,   0, 00, 95, 5, 1),
-    (2,  'img/uploads/user_1/item_2.png',   'top',       1, 215.0, 65, 35, 4, 1),
-    (3,  'img/uploads/user_1/item_3.png',   'top',       4,  38.0, 25, 82, 5, 1),
-    (4,  'img/uploads/user_2/item_4.png',   'top',       3,   0, 00, 12, 4, 2),
+    (1,  'img/uploads/a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p4/item_1.png',   'top',       2,   0, 00, 95, 5, 1),
+    (2,  'img/uploads/a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p4/item_2.png',   'top',       1, 215.0, 65, 35, 4, 1),
+    (3,  'img/uploads/a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p4/item_3.png',   'top',       4,  38.0, 25, 82, 5, 1),
+    (4,  'img/uploads/a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p5/item_4.png',   'top',       3,   0, 00, 12, 4, 2),
   
     -- Bas (bottoms)
-    (5,  'img/uploads/user_1/item_5.png',   'bottom',    3, 220, 55, 28, 5, 1),
-    (6,  'img/uploads/user_1/item_6.png',   'bottom',    1,  42.0, 32, 78, 4, 1),
-    (7,  'img/uploads/user_2/item_7.png',   'bottom',    4,   0, 00, 15, 4, 2),
-    (8,  'img/uploads/user_2/item_8.png',   'bottom',    2,  48.0, 18, 88, 3, 2),
+    (5,  'img/uploads/a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p4/item_5.png',   'bottom',    3, 220, 55, 28, 5, 1),
+    (6,  'img/uploads/a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p4/item_6.png',   'bottom',    1,  42.0, 32, 78, 4, 1),
+    (7,  'img/uploads/a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p5/item_7.png',   'bottom',    4,   0, 00, 15, 4, 2),
+    (8,  'img/uploads/a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p5/item_8.png',   'bottom',    2,  48.0, 18, 88, 3, 2),
   
     -- Chaussures (shoes)
-    (9,  'img/uploads/user_1/item_9.png',   'shoes',     2,   0, 00, 98, 5, 1),
-    (10, 'img/uploads/user_1/item_10.png',  'shoes',     4,  28.0, 58, 32, 4, 1),
-    (11, 'img/uploads/user_2/item_11.png',  'shoes',     3,   0, 00, 10, 4, 2),
+    (9,  'img/uploads/a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p4/item_9.png',   'shoes',     2,   0, 00, 98, 5, 1),
+    (10, 'img/uploads/a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p4/item_10.png',  'shoes',     4,  28.0, 58, 32, 4, 1),
+    (11, 'img/uploads/a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p5/item_11.png',  'shoes',     3,   0, 00, 10, 4, 2),
   
     -- Vestes / Manteaux (jackets)
-    (12, 'img/uploads/user_1/item_12.png',  'jacket',    1, 210, 45, 42, 4, 1),
-    (13, 'img/uploads/user_1/item_13.png',  'jacket',    4, 205.0, 12, 22, 5, 1),
-    (14, 'img/uploads/user_2/item_14.png',  'jacket',    3, 140, 40, 35, 3, 2),
+    (12, 'img/uploads/a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p4/item_12.png',  'jacket',    1, 210, 45, 42, 4, 1),
+    (13, 'img/uploads/a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p4/item_13.png',  'jacket',    4, 205.0, 12, 22, 5, 1),
+    (14, 'img/uploads/a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p5/item_14.png',  'jacket',    3, 140, 40, 35, 3, 2),
   
     -- Accessoires (accessories)
-    (15, 'img/uploads/user_1/item_15.png',  'accessory', 1,  30, 60, 25, 4, 1),
-    (16, 'img/uploads/user_1/item_16.png',  'accessory', 4,   0, 00, 60, 5, 1),
-    (17, 'img/uploads/user_2/item_17.png',  'accessory', 4, 350, 45, 30, 4, 2);
+    (15, 'img/uploads/a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p4/item_15.png',  'accessory', 1,  30, 60, 25, 4, 1),
+    (16, 'img/uploads/a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p4/item_16.png',  'accessory', 4,   0, 00, 60, 5, 1),
+    (17, 'img/uploads/a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p5/item_17.png',  'accessory', 4, 350, 45, 30, 4, 2);
   
     -- --------------------------------------------------------
     -- 4. Tenues générées (results)

@@ -9,6 +9,7 @@ $currentUserId = 1; // ID de l'utilisateur actuel (à remplacer par la session p
 
 $seasonRepo = new SeasonRepository();
 $itemRepo  = new ItemRepository();
+$userRepo  = new UserRepository();
 
 $seasons = $seasonRepo->getAll();
 $errors   = [];
@@ -38,7 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($errors)) {
         $itemToBeAdded = new Item($category, new Season($season_id), $color, $rate, '');
         $itemId = $itemRepo->insert($itemToBeAdded, $currentUserId);
-        if ($itemRepo->moveToActualImgPath(!empty($tmpFile) ? $tmpFile : $rawImg, $currentUserId, $itemId)) {
+        $userToken = $userRepo->getSecretToken($currentUserId);
+        if ($itemRepo->moveToActualImgPath(!empty($tmpFile) ? $tmpFile : $rawImg, $userToken, $itemId)) {
             header('Location: wardrobe.php');
             exit;
         }

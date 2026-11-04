@@ -26,6 +26,8 @@ class UserRepository extends Repository implements IDelete {
     }
 
     public function insert(User $user): int {
+        $secretToken = bin2hex(random_bytes(16)); // Generate a random secret token
+        
         return 0; // Not implemented yet
     }
 
@@ -36,5 +38,16 @@ class UserRepository extends Repository implements IDelete {
     #[Override]
     public function deleteById(int $userId): bool {
         return false; // Not implemented yet
+    }
+
+    public function getSecretToken(int $userId): ?string {
+        $stmt = $this->pdo->prepare("SELECT secret_token FROM users WHERE id = :id");
+        $stmt->execute(['id' => $userId]);
+        $row = $stmt->fetch();
+
+        if (!$row) {
+            return null;
+        }
+        return $row['secret_token'];
     }
 }

@@ -13,7 +13,8 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     last_color_harmony_importance DOUBLE, -- [0,1]
-    last_season_harmony_importance DOUBLE -- [0,1]
+    last_season_harmony_importance DOUBLE, -- [0,1]
+    secret_token VARCHAR(32) NOT NULL UNIQUE
 );
 
 

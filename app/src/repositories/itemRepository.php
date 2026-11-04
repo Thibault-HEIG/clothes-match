@@ -42,10 +42,7 @@ class ItemRepository extends Repository implements IDelete {
         return (int)$row['count'];
     }
 
-    public function getAllByCatgegoryAndUserId(string $category = '', int $userId = 0): array {
-        if ($userId <= 0) {
-            throw new InvalidArgumentException('Invalid user ID.');
-        }
+    public function getAllByCatgegoryAndUserId(string $category, int $userId): array {
 
         if ($category !== '') {
             $stmt = $this->pdo->prepare("SELECT clothes.*, seasons.name AS season_name, seasons.avg_temperature, seasons.icon_url
@@ -111,8 +108,8 @@ class ItemRepository extends Repository implements IDelete {
      * Update the temporary item image path into the user's upload directory.
      * Update the database with the new path.
      */
-    public function moveToActualImgPath(string|array $tmpFile, int $userId, int $itemId): bool {
-        $uploadDir = __DIR__ . '/../../public/img/uploads/user_' . $userId;
+    public function moveToActualImgPath(string|array $tmpFile, string $userToken, int $itemId): bool {
+        $uploadDir = __DIR__ . '/../../public/img/uploads/' . $userToken;
 
         if (!is_dir($uploadDir)) { // if user folder doesn't exist, we create it
             mkdir($uploadDir, 0775, true);
@@ -145,7 +142,7 @@ class ItemRepository extends Repository implements IDelete {
         }
 
         // Relative path for database (ex: img/uploads/user_1/item_42.png)
-        $dbPath = 'img/uploads/user_' . $userId . '/item_' . $itemId . '.' . $extension;
+        $dbPath = 'img/uploads/' . $userToken . '/item_' . $itemId . '.' . $extension;
         $destFullPath = $uploadDir . '/item_' . $itemId . '.' . $extension;
 
         $moved = $isInRepo ? rename($sourcePath, $destFullPath) : move_uploaded_file($sourcePath, $destFullPath);
