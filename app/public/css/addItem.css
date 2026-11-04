@@ -1,74 +1,298 @@
 /* ==========================================================================
-   addItem.css — Styles for the add-item form (photo upload + status feedback)
+   addItem.css — Page styles for addItem.php
+   Uses design tokens from theme.css. Do not redeclare tokens here.
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   Photo upload area
+   Header
    -------------------------------------------------------------------------- */
-.photo-field {
-    display: flex;
-    flex-direction: column;
-    gap: var(--gap-xs);
+header#addItem-header {
+	border-bottom: none;
+	padding-top: var(--gap-md);
+
+	a {
+		flex-direction: row;
+		font-size: 0.85rem;
+		color: var(--clr-violet-dark);
+		text-decoration: none;
+		opacity: 1;
+
+		&:hover {
+			color: var(--clr-ink);
+		}
+	}
 }
 
 /* --------------------------------------------------------------------------
-   Status line — shown below the file input while the API processes the image
+   Hero & Error feedback
    -------------------------------------------------------------------------- */
-#photo-status {
-    font-size: 0.875rem;
-    min-height: 1.25rem; /* prevents layout shift when text appears */
+#hero {
+	p:not(.date) {
+		color: var(--clr-rose-dark);
+		font-weight: 500;
+		font-size: 0.875rem;
+		margin-top: var(--gap-xs);
+	}
 
-    &[data-state="idle"] {
-        display: none;
-    }
+	ul {
+		list-style: disc;
+		padding-left: var(--gap-md);
+		margin-top: var(--gap-xs);
+		color: var(--clr-rose-dark);
+		font-size: 0.82rem;
 
-    &[data-state="loading"] {
-        color: var(--clr-ink-muted);
+		li {
+			line-height: 1.5;
+		}
+	}
+}
 
-        /* CSS-only spinner prepended to the message */
-        &::before {
-            content: "";
-            display: inline-block;
-            width: 0.75em;
-            height: 0.75em;
-            margin-right: 0.4em;
-            border: 2px solid var(--clr-linen-border);
-            border-top-color: var(--clr-violet-dark);
-            border-radius: 50%;
-            vertical-align: middle;
-            animation: spin 0.7s linear infinite;
-        }
-    }
+/* --------------------------------------------------------------------------
+   Form layout
+   -------------------------------------------------------------------------- */
+form {
+	max-width: 28rem;
+	margin-inline: auto;
+	padding: 0 var(--gap-lg) var(--gap-xl);
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-md);
 
-    &[data-state="done"] {
-        color: var(--clr-violet-dark);
-        font-weight: 600;
-    }
+	label,
+	legend {
+		display: block;
+		font-size: 0.78rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--clr-violet-dark);
+		margin-bottom: var(--gap-xs);
+	}
 
-    &[data-state="error"] {
-        color: var(--clr-rose-dark);
-    }
+	.photo-upload,
+	.category-select,
+	.season-select,
+	.color-select,
+	.rate-select {
+		padding-bottom: var(--gap-md);
+		border-bottom: 1px solid var(--clr-linen-border);
+	}
+
+	/* Photo upload */
+	.photo-upload {
+		display: flex;
+		flex-direction: column;
+		gap: var(--gap-xs);
+
+		input[type="file"] {
+			font-family: var(--font-sans);
+			font-size: 0.82rem;
+			color: var(--clr-ink-muted);
+			padding: var(--gap-sm);
+			background-color: var(--clr-white);
+			border: 1px dashed var(--clr-linen-border);
+			border-radius: var(--radius-md);
+			cursor: pointer;
+			width: 100%;
+			transition: border-color var(--transition), background-color var(--transition);
+
+			&::file-selector-button {
+				font-family: var(--font-sans);
+				font-size: 0.78rem;
+				font-weight: 600;
+				padding: 0.4rem 0.9rem;
+				margin-right: var(--gap-sm);
+				border-radius: var(--radius-pill);
+				border: none;
+				background-color: var(--clr-violet-pale);
+				color: var(--clr-violet-dark);
+				cursor: pointer;
+				transition: background-color var(--transition);
+
+				&:hover {
+					background-color: var(--clr-violet-light);
+					color: var(--clr-white);
+				}
+			}
+
+			&:hover {
+				border-color: var(--clr-violet-light);
+			}
+		}
+
+		#photo-status {
+			font-size: 0.82rem;
+			min-height: 1.25rem;
+
+			&[data-state="idle"] {
+				display: none;
+			}
+
+			&[data-state="loading"] {
+				color: var(--clr-ink-muted);
+
+				&::before {
+					content: "";
+					display: inline-block;
+					width: 0.75em;
+					height: 0.75em;
+					margin-right: 0.4em;
+					border: 2px solid var(--clr-linen-border);
+					border-top-color: var(--clr-violet-dark);
+					border-radius: 50%;
+					vertical-align: middle;
+					animation: spin 0.7s linear infinite;
+				}
+			}
+
+			&[data-state="done"] {
+				color: var(--clr-violet-dark);
+				font-weight: 600;
+			}
+
+			&[data-state="error"] {
+				color: var(--clr-rose-dark);
+			}
+		}
+
+		#photo-preview {
+			max-width: 180px;
+			max-height: 180px;
+			margin-inline: auto;
+			object-fit: contain;
+			border-radius: var(--radius-md);
+			background-image:
+				linear-gradient(45deg, var(--clr-linen-dark) 25%, transparent 25%),
+				linear-gradient(-45deg, var(--clr-linen-dark) 25%, transparent 25%),
+				linear-gradient(45deg, transparent 75%, var(--clr-linen-dark) 75%),
+				linear-gradient(-45deg, transparent 75%, var(--clr-linen-dark) 75%);
+			background-size: 16px 16px;
+			background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+			border: 1px solid var(--clr-linen-border);
+		}
+	}
+
+	/* Category dropdown */
+	.category-select {
+		select {
+			width: 100%;
+			font-family: var(--font-sans);
+			font-size: 0.875rem;
+			color: var(--clr-ink);
+			padding: 0.75rem 1rem;
+			background-color: var(--clr-white);
+			border: 1px solid var(--clr-linen-border);
+			border-radius: var(--radius-md);
+			outline: none;
+			cursor: pointer;
+			transition: border-color var(--transition), box-shadow var(--transition);
+
+			&:focus {
+				border-color: var(--clr-violet-dark);
+				box-shadow: 0 0 0 3px var(--clr-violet-pale);
+			}
+		}
+	}
+
+	/* Seasons radio group */
+	.season-select {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: var(--gap-xs);
+
+		legend {
+			grid-column: 1 / -1;
+		}
+
+		input[type="radio"] {
+			accent-color: var(--clr-violet-dark);
+			cursor: pointer;
+			align-self: center;
+		}
+
+		label {
+			font-size: 0.85rem;
+			font-weight: 400;
+			text-transform: none;
+			letter-spacing: normal;
+			color: var(--clr-ink);
+			cursor: pointer;
+			margin-bottom: 0;
+			align-self: center;
+		}
+	}
+
+	/* Color picker wrapper */
+	.color-select {
+		.hsv-picker {
+			margin-inline: auto;
+		}
+	}
+
+	/* Rating radio group */
+	.rate-select {
+		.tip {
+			font-size: 0.78rem;
+			color: var(--clr-ink-muted);
+			margin-bottom: var(--gap-sm);
+			line-height: 1.4;
+		}
+
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--gap-xs) var(--gap-sm);
+
+		label,
+		.tip {
+			width: 100%;
+		}
+
+		input[type="radio"] {
+			accent-color: var(--clr-star);
+			cursor: pointer;
+			margin: 0;
+		}
+
+		span {
+			font-size: 0.85rem;
+			font-weight: 600;
+			color: var(--clr-star);
+			margin-right: var(--gap-xs);
+		}
+	}
+
+	/* Submit button matching primary action */
+	button[type="submit"] {
+		width: 100%;
+		font-family: var(--font-sans);
+		font-size: 0.82rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		padding: 1rem 1.5rem;
+		border-radius: var(--radius-pill);
+		border: none;
+		cursor: pointer;
+		background-color: var(--clr-violet-dark);
+		color: var(--clr-white);
+		margin-top: var(--gap-xs);
+		transition:
+			background-color var(--transition),
+			box-shadow var(--transition),
+			opacity var(--transition);
+
+		&:hover:not(:disabled) {
+			background-color: #4440b8;
+			box-shadow: 0 4px 16px rgba(85, 75, 209, 0.3);
+		}
+
+		&:disabled {
+			opacity: 0.5;
+			cursor: not-allowed;
+		}
+	}
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-/* --------------------------------------------------------------------------
-   Preview image — transparent PNG returned by the API
-   -------------------------------------------------------------------------- */
-#photo-preview {
-    max-width: 180px;
-    max-height: 180px;
-    object-fit: contain;
-    border-radius: var(--radius-md);
-    /* Checkerboard background to make transparency visible */
-    background-image:
-        linear-gradient(45deg, var(--clr-linen-dark) 25%, transparent 25%),
-        linear-gradient(-45deg, var(--clr-linen-dark) 25%, transparent 25%),
-        linear-gradient(45deg, transparent 75%, var(--clr-linen-dark) 75%),
-        linear-gradient(-45deg, transparent 75%, var(--clr-linen-dark) 75%);
-    background-size: 16px 16px;
-    background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
-    border: 1px solid var(--clr-linen-border);
+	to { transform: rotate(360deg); }
 }
