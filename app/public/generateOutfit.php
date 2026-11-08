@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="harmony-slider">
                 <label for="harmony">Harmonie</label>
                 <span>de couleur</span>
-                <input type="range" id="harmony" name="harmony" min="0" max="1" step="0.01" value="0.5">
+                <input type="range" id="harmony" name="harmony" min="0" max="1" step="0.01" value="<?= htmlspecialchars($seasonHarmony) ?>">
                 <span>de saison</span>
             </div>
             <div class="season-select">

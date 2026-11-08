@@ -47,3 +47,4 @@ const ALLOWED_IMAGE_TYPES = [
 ];
 
 const ALGORITHM_TEMPERATURE = 0.3; // Part de de hasard dans la génération d'outfits (0 = très conservateur, 1 = très aléatoire)
+const RATE_IMPORTANCE = 0.3;

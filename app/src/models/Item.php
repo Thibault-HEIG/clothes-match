@@ -14,12 +14,6 @@ class Item {
     private string $img_url;
 
     public function __construct(string $category, Season $season, Color $color, int $user_rate, string $img_url, ?int $id = null) {
-        if ($user_rate < 0 || $user_rate > 5) {
-            throw new InvalidArgumentException("User rate must be between 0 and 5.");
-        }
-        if (!array_key_exists($category, CATEGORIES)) {
-            throw new InvalidArgumentException("Category is not valid.");
-        }
         $this->id = $id;
         $this->category = $category;
         $this->season = $season;
