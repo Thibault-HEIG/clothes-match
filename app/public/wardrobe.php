@@ -44,7 +44,7 @@ $category = $_GET['category'] ?? '';
                     </a>
                 </div>
                 <?php
-                $items = $itemRepo->getAllByCatgegoryAndUserId($category, $currentUserId);
+                $items = $itemRepo->getAllByUserIdAndCategory($currentUserId, $category);
                 foreach ($items as $item) {
                     echo '<div class="wardrobe-item-container">';
                     echo '<img src="' . htmlspecialchars($item->getImgUrl()) . '" class="wardrobe-item" data-category="' . htmlspecialchars($item->getCategory()) . '">';

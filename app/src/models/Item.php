@@ -41,4 +41,8 @@ class Item {
         return $this->color;
     }
 
+    public function getId(): ?int {
+        return $this->id;
+    }
+
 }
